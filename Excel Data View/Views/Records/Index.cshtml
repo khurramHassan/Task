@@ -1,0 +1,120 @@
+﻿@model IEnumerable<ExcelRecord>
+@{
+    Layout = null;
+}
+
+<style>
+    /* Set the background color for the body */
+    body {
+        background-color: #ADD8E6;
+    }
+
+    /* Center the container div */
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px; /* Adjust the margin as needed */
+    }
+
+    /* Style the Upload button */
+    .upload-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px; /* Add some top margin to separate from the form */
+    }
+
+        .upload-button:hover {
+            background-color: #45a049;
+        }
+
+
+    /* Style the download button */
+    .download-button {
+        background-color: #337ab7;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px; /* Add some top margin to separate from the form */
+        margin-left: 10px; /* Add margin to the left to separate it from the upload button */
+    }
+
+        .download-button:hover {
+            background-color: #23527c;
+        }
+    /* Style the table */
+    table {
+        width: 50%;
+        border-collapse: collapse;
+        border: 2px solid black; /* Set the table border to solid black */
+    }
+
+    th {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        background-color:; /* Background color for the table header row */
+        background-color: #808080; /* Background color for the table header row */
+        color: #333; /* Text color for the table header row */
+    }
+
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+        background-color: #f2f2f2;
+    }
+</style>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+<div class="container">
+    <form asp-controller="/" asp-action="Index" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <hr />
+        <button type="submit" class="upload-button">Upload</button>
+
+        <a asp-action="Download" asp-controller="Records" class="download-button">Download</a>
+    </form>
+
+    @if (Model.Count() > 0)
+    {
+        <hr />
+        <table id="recordsTable" cellpadding="0" cellspacing="0">
+            <tr>
+                <th>Name</th>
+                <th>Id</th>
+                <th>Email</th>
+                
+            </tr>
+            @foreach (ExcelRecord excel_records in Model)
+            {
+                <tr>
+                    <td>@excel_records.FirstName</td>
+                    <td>@excel_records.Id</td>
+                    <td>@excel_records.Email</td>
+                </tr>
+            }
+        </table>
+    }
+</div>
